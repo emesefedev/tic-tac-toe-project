@@ -23,7 +23,7 @@ function GameBoard(totalRows, totalColumns) {
         if (column < 0 || column >= columns) {
             return false
         }
-        if (!board[row][column].isAvailable()) {
+        if (!isFull() && !board[row][column].isAvailable()) {
             return false
         }
 
@@ -88,7 +88,7 @@ function GameBoard(totalRows, totalColumns) {
     // Once we create the object, we create the board
     createBoard()
   
-    return { getBoard, addMarkToBoard, printBoard, isValidMarkPosition, isWinner, isFull }
+    return { getBoard, addMarkToBoard, printBoard, isValidMarkPosition, hasWinner: isWinner, isFull }
 }
 
 function Cell() {
@@ -142,26 +142,26 @@ function GameController(
         board.printBoard()
     }
 
-    const playRound = (r, c) => {
+    const playRound = () => {
 
-        let row = r
-        let column = c
+        let {row, column} = getInput()
         
         console.log(`Adding ${getCurrentTurn().name}'s mark into (${row}, ${column})...`)
 
         while (!board.isValidMarkPosition(row, column)) {
             console.log(`Invalid position (${row}, ${column})... Try again`)
-            (row, column) = getInput()   
+            
+            // TODO: Can this be done differently?
+            const newInput = getInput()
+            row = newInput.row
+            column = newInput.column
 
             console.log(`Adding ${getCurrentTurn().name}'s mark into (${row}, ${column})...`)
         }
         
         board.addMarkToBoard(row, column, getCurrentTurn())
 
-        const isWinner = board.isWinner(getCurrentTurn())
-        const isFull = board.isFull()
-
-        return {isWinner, isFull}
+        return board.hasWinner(getCurrentTurn())
     }
 
     const getInput = () => {
@@ -173,24 +173,16 @@ function GameController(
 
     const playGame = () => {
         printNewRound()
-        
-        const input = getInput()
-        const roundResult = playRound(input.row, input.column)
+        let hasWon = playRound()
 
-        while (!roundResult.isWinner && !roundResult.isFull) {
-            
+        while (!hasWon) {
             changeTurn()
             printNewRound()
 
-            input = getInput()
-            roundResult = playRound(input.row, input.column)   
+            hasWon = playRound()   
         }
 
-        if (isFull) {
-            console.log(`DRAW`)
-        } else if (isWinner) {
-            console.log(`${getCurrentTurn().name} WINS!`)
-        }  
+        console.log(`${getCurrentTurn().name} WINS!`)
     }
     
     return {
