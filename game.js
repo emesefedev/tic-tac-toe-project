@@ -19,10 +19,12 @@ function GameBoard(totalRows, totalColumns) {
     const isValidMarkPosition = (row, column, player) => {
         if (row < 0 || row >= rows) {
             return false
-        }   
+        } 
+          
         if (column < 0 || column >= columns) {
             return false
         }
+
         if (!isFull()) {
             if (!board[row][column].isAvailable()) {
                 return false
@@ -113,7 +115,7 @@ function Cell() {
         return value
     }
   
-    return { addMark, getValue, isAvailable }
+    return { addMark, isAvailable, getValue }
 }
 
 class Player {
@@ -123,36 +125,32 @@ class Player {
     }
 }
 
-function GameController(
-    playerOneName = "Player One",
-    playerTwoName = "Player Two"
-) {
+function GameController() {
     const board = GameBoard(3, 3)
 
     const players = [
-        new Player(playerOneName, "X"),
-        new Player(playerTwoName, "O")
+        new Player("Player One", "X"),
+        new Player("Player Two", "O")
     ]
 
-    let currentTurn = players[0]
+    let currentPlayer = players[0]
 
     const changeTurn = () => {
-        currentTurn = currentTurn === players[0] ? players[1] : players[0];
+        currentPlayer = currentPlayer === players[0] ? players[1] : players[0];
     }
 
     const getCurrentPlayer = () => {
-        return currentTurn
+        return currentPlayer
     }
 
     const printNewRound = () => {
-        console.log(`${getCurrentPlayer().name}'s turn. What will you do?`)
+        console.log(`${currentPlayer.name}'s turn. What will you do?`)
         board.printBoard()
     }
 
     const playRound = () => {
 
         let {row, column} = getInput()
-        const currentPlayer = getCurrentPlayer()
         
         console.log(`Adding ${currentPlayer.name}'s mark into (${row}, ${column})...`)
 
@@ -190,7 +188,7 @@ function GameController(
             hasWon = playRound()   
         }
 
-        console.log(`${getCurrentPlayer().name} WINS!`)
+        console.log(`${currentPlayer.name} WINS!`)
     }
     
     return {
