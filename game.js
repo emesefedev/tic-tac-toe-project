@@ -23,6 +23,10 @@ function GameBoard(totalRows, totalColumns) {
         if (column < 0 || column >= columns) {
             return false
         }
+        if (!board[row][column].isAvailable()) {
+            return false
+        }
+
         return true
     }
 
@@ -91,11 +95,15 @@ function Cell() {
       value = player.mark;
     }
 
+    const isAvailable = () => {
+        return value === ""
+    }
+
     const getValue = () => {
         return value
     }
   
-    return { addMark, getValue }
+    return { addMark, getValue, isAvailable }
 }
 
 class Player {
