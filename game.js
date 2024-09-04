@@ -198,4 +198,4 @@ function GameController() {
 }
   
 const game = GameController()
-game.playGame()
+//game.playGame()

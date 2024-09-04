@@ -2,3 +2,18 @@ body {
     font-family: "Roboto", sans-serif;
     background-color: gainsboro;
 }
+
+.bg-temp {
+    background-color: blue;
+    border-radius: 10px;
+}
+
+.board-grid {
+    display: grid;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+
+    gap: 10px;
+
+    width: 400px;
+    height: 400px;
+}
