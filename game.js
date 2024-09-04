@@ -30,16 +30,22 @@ function GameBoard(totalRows, totalColumns) {
         return true
     }
 
+    const isFull = () => {
+        for (const row of board) {
+            if (!row.every(cell => !cell.isAvailable())) {
+                return false
+            }
+        }
+        return true
+    }
+
     const isWinner = (player) => {
         // TODO: Can this be improved?
         // Check rows
-        let r = 0
         for (const row of board) {
             if (row.every(cell => cell.getValue() === player.mark)) {
-                console.log(`${player.mark} wins for row ${r}`)
                 return true
             }
-            r++
         }
 
         // Check columns
@@ -47,7 +53,6 @@ function GameBoard(totalRows, totalColumns) {
             if (board[0][j].getValue() === player.mark 
                 && board[0][j].getValue() === board[1][j].getValue() 
                 && board[1][j].getValue() === board[2][j].getValue()) {
-                    console.log(`${player.mark} wins for column ${j}`)
                     return true
                 }
         }
@@ -56,14 +61,12 @@ function GameBoard(totalRows, totalColumns) {
         if (board[0][0].getValue() === player.mark 
             && board[0][0].getValue() === board[1][1].getValue() 
             && board[1][1].getValue() === board[2][2].getValue()) {
-                console.log(`${player.mark} wins for diagonal 1`)
                 return true
             }
         
         if (board[0][2].getValue() === player.mark 
             && board[0][2].getValue() === board[1][1].getValue() 
             && board[1][1].getValue() === board[2][0].getValue()) {
-                console.log(`${player.mark} wins for diagonal 1`)
                 return true
             }
         
@@ -85,7 +88,7 @@ function GameBoard(totalRows, totalColumns) {
     // Once we create the object, we create the board
     createBoard()
   
-    return { getBoard, addMarkToBoard, printBoard, isValidMarkPosition, isWinner }
+    return { getBoard, addMarkToBoard, printBoard, isValidMarkPosition, isWinner, isFull }
 }
 
 function Cell() {
@@ -160,16 +163,29 @@ function GameController(
         
         playRound(row, column)
 
-        while (!board.isWinner(getCurrentTurn())) {
+        let isWinner = board.isWinner(getCurrentTurn())
+        let isFull = board.isFull()
+
+        while (!isWinner && !isFull) {
+            
             changeTurn()
             printNewRound()
 
             row = prompt("row")
             column = prompt("column")
             playRound(row, column)   
+
+            isWinner = board.isWinner(getCurrentTurn())
+            isFull = board.isFull()
+        }
+        
+        if (isFull) {
+            console.log(`DRAW`)
+        } else if (isWinner) {
+            console.log(`${getCurrentTurn().name} WINS!`)
         }
 
-        console.log(`${getCurrentTurn().name} WINS!`)
+        
     }
     
     return {
