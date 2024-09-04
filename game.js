@@ -16,15 +16,22 @@ function GameBoard(totalRows, totalColumns) {
         return board
     }
 
-    const isValidMarkPosition = (row, column) => {
+    const isValidMarkPosition = (row, column, player) => {
         if (row < 0 || row >= rows) {
             return false
         }   
         if (column < 0 || column >= columns) {
             return false
         }
-        if (!isFull() && !board[row][column].isAvailable()) {
-            return false
+        if (!isFull()) {
+            if (!board[row][column].isAvailable()) {
+                return false
+            }  
+        }
+        else {
+            if (board[row][column].getValue() === player.mark) {
+                return false
+            }
         }
 
         return true
@@ -39,7 +46,7 @@ function GameBoard(totalRows, totalColumns) {
         return true
     }
 
-    const isWinner = (player) => {
+    const hasWinner = (player) => {
         // TODO: Can this be improved?
         // Check rows
         for (const row of board) {
@@ -88,7 +95,7 @@ function GameBoard(totalRows, totalColumns) {
     // Once we create the object, we create the board
     createBoard()
   
-    return { getBoard, addMarkToBoard, printBoard, isValidMarkPosition, hasWinner: isWinner, isFull }
+    return { getBoard, addMarkToBoard, printBoard, isValidMarkPosition, hasWinner, isFull }
 }
 
 function Cell() {
@@ -133,22 +140,23 @@ function GameController(
         currentTurn = currentTurn === players[0] ? players[1] : players[0];
     }
 
-    const getCurrentTurn = () => {
+    const getCurrentPlayer = () => {
         return currentTurn
     }
 
     const printNewRound = () => {
-        console.log(`${getCurrentTurn().name}'s turn. What will you do?`)
+        console.log(`${getCurrentPlayer().name}'s turn. What will you do?`)
         board.printBoard()
     }
 
     const playRound = () => {
 
         let {row, column} = getInput()
+        const currentPlayer = getCurrentPlayer()
         
-        console.log(`Adding ${getCurrentTurn().name}'s mark into (${row}, ${column})...`)
+        console.log(`Adding ${currentPlayer.name}'s mark into (${row}, ${column})...`)
 
-        while (!board.isValidMarkPosition(row, column)) {
+        while (!board.isValidMarkPosition(row, column, currentPlayer)) {
             console.log(`Invalid position (${row}, ${column})... Try again`)
             
             // TODO: Can this be done differently?
@@ -156,12 +164,12 @@ function GameController(
             row = newInput.row
             column = newInput.column
 
-            console.log(`Adding ${getCurrentTurn().name}'s mark into (${row}, ${column})...`)
+            console.log(`Adding ${currentPlayer.name}'s mark into (${row}, ${column})...`)
         }
         
-        board.addMarkToBoard(row, column, getCurrentTurn())
+        board.addMarkToBoard(row, column, currentPlayer)
 
-        return board.hasWinner(getCurrentTurn())
+        return board.hasWinner(currentPlayer)
     }
 
     const getInput = () => {
@@ -182,12 +190,12 @@ function GameController(
             hasWon = playRound()   
         }
 
-        console.log(`${getCurrentTurn().name} WINS!`)
+        console.log(`${getCurrentPlayer().name} WINS!`)
     }
     
     return {
         playGame,
-        getCurrentTurn
+        getCurrentPlayer
     }
 }
   
