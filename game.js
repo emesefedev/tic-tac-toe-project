@@ -27,6 +27,7 @@ function GameBoard(totalRows, totalColumns) {
     }
 
     const isWinner = (player) => {
+        // TODO: Can this be improved?
         // Check rows
         let r = 0
         for (const row of board) {
@@ -41,7 +42,7 @@ function GameBoard(totalRows, totalColumns) {
         for (let j = 0; j < columns; j++) {
             if (board[0][j].getValue() === player.mark 
                 && board[0][j].getValue() === board[1][j].getValue() 
-                && board[1][j].getValue() === borad[2][j].getValue()) {
+                && board[1][j].getValue() === board[2][j].getValue()) {
                     console.log(`${player.mark} wins for column ${j}`)
                     return true
                 }
@@ -50,14 +51,14 @@ function GameBoard(totalRows, totalColumns) {
         // Check diagonals
         if (board[0][0].getValue() === player.mark 
             && board[0][0].getValue() === board[1][1].getValue() 
-            && board[1][1].getValue() === borad[2][2].getValue()) {
+            && board[1][1].getValue() === board[2][2].getValue()) {
                 console.log(`${player.mark} wins for diagonal 1`)
                 return true
             }
         
         if (board[0][2].getValue() === player.mark 
             && board[0][2].getValue() === board[1][1].getValue() 
-            && board[1][1].getValue() === borad[2][0].getValue()) {
+            && board[1][1].getValue() === board[2][0].getValue()) {
                 console.log(`${player.mark} wins for diagonal 1`)
                 return true
             }
