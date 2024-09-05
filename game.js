@@ -1,3 +1,12 @@
+const startButton = () => document.getElementById("start-game-button")
+
+window.addEventListener("load", () => {
+    startButton().addEventListener("click", () => {
+        const game = GameController()
+        game.playGame()
+    })    
+})
+
 function GameBoard(totalRows, totalColumns) {
     const rows = totalRows
     const columns = totalColumns
@@ -197,5 +206,3 @@ function GameController() {
     }
 }
   
-const game = GameController()
-//game.playGame()

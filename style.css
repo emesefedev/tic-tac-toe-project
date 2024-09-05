@@ -4,8 +4,8 @@
     --gray-color: rgb(136, 149, 179);
     --pink-color: rgb(218, 182, 252);
     --malva-color: rgb(187, 173, 255);
-    --light-blue-color: rgb(159, 160, 255);
-    --dark-blue-color: rgb(142, 148, 242);
+    --green-color: rgb(229, 244, 227);
+    --blue-color: rgb(142, 148, 242);
 }
 
 body {
@@ -13,17 +13,28 @@ body {
     background-color: var(--gray-color);
 }
 
+button {
+    font-size: 1.25em;
+    color: var(--green-color);
+    width: 120px;
+    height: 2em;
+    border: solid 2px var(--green-color);
+    border-radius: 10px;
+    background-color: transparent;
+}
+
 /* TEXT */
 .title {
     font-size: 3em;
     color: var(--pink-color);
+    text-align: center;
 }
 
 /* BOARD */
 
 .board-cell {
     background-color: var(--gray-color);
-    border: solid 2px var(--pink-color);
+    border: solid 5px var(--pink-color);
     border-radius: 10px;
 }
 
@@ -37,6 +48,22 @@ body {
     height: var(--board-size);
 }
 
+/* WIDTH */
+.full-width {
+    width: 100vw;
+}
+
+/* PADDING */
+
 .p-16 {
     padding: 16px;
+}
+
+/* FLEX */
+.flex {
+    display: flex;
+}
+
+.justify-evenly {
+    justify-content: space-evenly;
 }
