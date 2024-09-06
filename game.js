@@ -42,13 +42,17 @@ let game = null
 const startButton = () => document.getElementById("start-game-button")
 const restartButton = () => document.getElementById("restart-game-button")
 const boardCells = () => document.querySelectorAll(".board-cell")
+const messageText = () => document.getElementById("message")
 
 window.addEventListener("load", () => {
     startButton().addEventListener("click", () => {
         startButton().classList.add("hidden")
+
         restartButton().classList.remove("hidden")
+        messageText().classList.remove("hidden")
 
         game = GameController()
+        updateTurnMessage()
 
         makeBoardCellsInteractable()        
     })  
@@ -72,6 +76,10 @@ function makeBoardCellsInteractable() {
     boardCells().forEach((boardCell) => {
         boardCell.classList.remove("not-interactable")
     })
+}
+
+function updateTurnMessage() {
+    messageText().textContent = `${game.getCurrentPlayer().name}'s turn. What will you do? `
 }
 
 function GameBoard(totalRows, totalColumns) {
@@ -216,6 +224,7 @@ function GameController() {
 
     const changeTurn = () => {
         currentPlayer = currentPlayer === players[0] ? players[1] : players[0];
+        updateTurnMessage()
     }
 
     const getCurrentPlayer = () => {

@@ -2,10 +2,12 @@
     --board-size: 30vw;
 
     --gray-color: rgb(136, 149, 179);
+    --white-color: rgb(255, 255, 255);
     --pink-color: rgb(218, 182, 252);
-    --malva-color: rgb(187, 173, 255);
+    --tangerine-color: rgb(250, 162, 117);
+    --blue-color: rgb(110, 250, 251);
     --green-color: rgb(229, 244, 227);
-    --blue-color: rgb(142, 148, 242);
+    --black-color: rgb(35, 31, 32);
 }
 
 body {
@@ -28,6 +30,11 @@ button {
     font-size: 3em;
     color: var(--pink-color);
     text-align: center;
+}
+
+.message {
+    font-size: 1em;
+    color: var(--white-color)
 }
 
 /* BOARD */
