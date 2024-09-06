@@ -52,15 +52,25 @@ window.addEventListener("load", () => {
         restartButton().classList.remove("hidden")
         turnMessageText().classList.remove("hidden")
 
-        game = GameController()
-        updateTurnMessage()
-
-        makeBoardCellsInteractable()        
+        newGame()    
     })  
+
+    restartButton().addEventListener("click", () => {
+        newGame()
+    })
     
-    initializeBoardCells()
-    
+    initializeBoardCells() 
+    makeBoardCellsNotInteractable()  
 })
+
+function newGame() {
+    game = GameController()
+    updateTurnMessage()
+    turnMessageText().classList.remove("win")
+    
+    cleanBoardCells()
+    makeBoardCellsInteractable()    
+}
 
 function initializeBoardCells() {
     boardCells().forEach((boardCell, i) => {
@@ -69,7 +79,6 @@ function initializeBoardCells() {
             const {row, column} = boardCellsPositions[boardCell.id]
             game.playRound(row, column)
         })
-        boardCell.classList.add("not-interactable")
     })
 }
 
@@ -82,6 +91,12 @@ function makeBoardCellsInteractable() {
 function makeBoardCellsNotInteractable() {
     boardCells().forEach((boardCell) => {
         boardCell.classList.add("not-interactable")
+    })
+}
+
+function cleanBoardCells() {
+    boardCells().forEach((boardCell) => {
+        boardCell.textContent = ""
     })
 }
 
