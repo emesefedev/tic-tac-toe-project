@@ -42,14 +42,15 @@ let game = null
 const startButton = () => document.getElementById("start-game-button")
 const restartButton = () => document.getElementById("restart-game-button")
 const boardCells = () => document.querySelectorAll(".board-cell")
-const messageText = () => document.getElementById("message")
+const turnMessageText = () => document.getElementById("turn-message")
+const invalidPositionMessageText = () => document.getElementById("invalid-position-message")
 
 window.addEventListener("load", () => {
     startButton().addEventListener("click", () => {
         startButton().classList.add("hidden")
 
         restartButton().classList.remove("hidden")
-        messageText().classList.remove("hidden")
+        turnMessageText().classList.remove("hidden")
 
         game = GameController()
         updateTurnMessage()
@@ -78,8 +79,28 @@ function makeBoardCellsInteractable() {
     })
 }
 
+function makeBoardCellsNotInteractable() {
+    boardCells().forEach((boardCell) => {
+        boardCell.classList.add("not-interactable")
+    })
+}
+
 function updateTurnMessage() {
-    messageText().textContent = `${game.getCurrentPlayer().name}'s turn. What will you do? `
+    turnMessageText().textContent = `${game.getCurrentPlayer().name}'s turn. What will you do? `
+}
+
+function showWinMessage() {
+    turnMessageText().classList.add("win")
+    turnMessageText().textContent = `${game.getCurrentPlayer().name} wins!!!`
+}
+
+function showInvalidPositionMessage() {
+    invalidPositionMessageText().classList.remove("hidden")
+    invalidPositionMessageText().textContent = `Invalid position... Try again`
+}
+
+function hideInvalidPositionMessage() {
+    invalidPositionMessageText().classList.add("hidden")
 }
 
 function GameBoard(totalRows, totalColumns) {
@@ -232,42 +253,24 @@ function GameController() {
     }
 
     const playRound = (row, column) => {        
-        console.log(`Adding ${currentPlayer.name}'s mark into (${row}, ${column})...`)
+        console.log(`${board.isValidMarkPosition(row, column, currentPlayer)}`)
 
-        // while (!board.isValidMarkPosition(row, column, currentPlayer)) {
-        //     console.log(`Invalid position (${row}, ${column})... Try again`)
-            
-        //     // TODO: Redo this because now we don't have to paint until it's valid
-        //     // const newInput = getInput()
-        //     // row = newInput.row
-        //     // column = newInput.column
-
-        //     console.log(`Adding ${currentPlayer.name}'s mark into (${row}, ${column})...`)
-        // }
+        if (!board.isValidMarkPosition(row, column, currentPlayer)) {
+            console.log("Estoy entrando")
+            showInvalidPositionMessage()
+            return
+        }
         
         board.addMarkToBoard(row, column, currentPlayer)
+        hideInvalidPositionMessage()
 
         if (!board.hasWinner(currentPlayer)) {
             changeTurn()
         }
-
-        // return board.hasWinner(currentPlayer)
-    }
-
-    const playGame = () => {
-        //printNewRound()
-        //let hasWon = playRound()
-
-        let hasWon = false
-
-        while (!hasWon) {
-            changeTurn()
-            //printNewRound()
-
-            hasWon = playRound()   
+        else {
+            showWinMessage()
+            makeBoardCellsNotInteractable()
         }
-
-        console.log(`${currentPlayer.name} WINS!`)
     }
     
     return {

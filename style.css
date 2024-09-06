@@ -10,6 +10,10 @@
     --black-color: rgb(35, 31, 32);
 }
 
+* {
+    margin: 0;
+}
+
 body {
     font-family: "Roboto", sans-serif;
     background-color: var(--gray-color);
@@ -30,11 +34,23 @@ button {
     font-size: 3em;
     color: var(--pink-color);
     text-align: center;
+
+    margin-bottom: 32px;
 }
 
 .message {
     font-size: 1em;
     color: var(--white-color)
+}
+
+.invalid {
+    font-size: 1.25em;
+    color: var(--tangerine-color);
+}
+
+.win {
+    font-size: 1.5em;
+    color: var(--blue-color);
 }
 
 /* BOARD */
