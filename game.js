@@ -1,11 +1,78 @@
+const boardCellsPositions = {
+    0: {
+        row: 0,
+        column:0
+    },
+    1: {
+        row: 0,
+        column:1
+    },
+    2: {
+        row: 0,
+        column:2
+    },
+    3: {
+        row: 1,
+        column:0
+    },
+    4: {
+        row: 1,
+        column:1
+    },
+    5: {
+        row: 1,
+        column:2
+    },
+    6: {
+        row: 2,
+        column:0
+    },
+    7: {
+        row: 2,
+        column:1
+    },
+    8: {
+        row: 2,
+        column:2
+    }
+}
+
+let game = null
+
 const startButton = () => document.getElementById("start-game-button")
+const restartButton = () => document.getElementById("restart-game-button")
+const boardCells = () => document.querySelectorAll(".board-cell")
 
 window.addEventListener("load", () => {
     startButton().addEventListener("click", () => {
-        const game = GameController()
-        game.playGame()
-    })    
+        startButton().classList.add("hidden")
+        restartButton().classList.remove("hidden")
+
+        game = GameController()
+
+        makeBoardCellsInteractable()        
+    })  
+    
+    initializeBoardCells()
+    
 })
+
+function initializeBoardCells() {
+    boardCells().forEach((boardCell, i) => {
+        boardCell.id = i
+        boardCell.addEventListener("click", () => {
+            const {row, column} = boardCellsPositions[boardCell.id]
+            game.playRound(row, column)
+        })
+        boardCell.classList.add("not-interactable")
+    })
+}
+
+function makeBoardCellsInteractable() {
+    boardCells().forEach((boardCell) => {
+        boardCell.classList.remove("not-interactable")
+    })
+}
 
 function GameBoard(totalRows, totalColumns) {
     const rows = totalRows
@@ -92,7 +159,10 @@ function GameBoard(totalRows, totalColumns) {
     }
   
     const addMarkToBoard = (row, column, player) => {
-      board[row][column].addMark(player);
+        const cell = board[row][column]
+        cell.addMark(player)
+        
+        boardCells()[rows * row + column].textContent = cell.getValue()
     }
   
     const printBoard = () => {
@@ -152,47 +222,38 @@ function GameController() {
         return currentPlayer
     }
 
-    const printNewRound = () => {
-        console.log(`${currentPlayer.name}'s turn. What will you do?`)
-        board.printBoard()
-    }
-
-    const playRound = () => {
-
-        let {row, column} = getInput()
-        
+    const playRound = (row, column) => {        
         console.log(`Adding ${currentPlayer.name}'s mark into (${row}, ${column})...`)
 
-        while (!board.isValidMarkPosition(row, column, currentPlayer)) {
-            console.log(`Invalid position (${row}, ${column})... Try again`)
+        // while (!board.isValidMarkPosition(row, column, currentPlayer)) {
+        //     console.log(`Invalid position (${row}, ${column})... Try again`)
             
-            // TODO: Can this be done differently?
-            const newInput = getInput()
-            row = newInput.row
-            column = newInput.column
+        //     // TODO: Redo this because now we don't have to paint until it's valid
+        //     // const newInput = getInput()
+        //     // row = newInput.row
+        //     // column = newInput.column
 
-            console.log(`Adding ${currentPlayer.name}'s mark into (${row}, ${column})...`)
-        }
+        //     console.log(`Adding ${currentPlayer.name}'s mark into (${row}, ${column})...`)
+        // }
         
         board.addMarkToBoard(row, column, currentPlayer)
 
-        return board.hasWinner(currentPlayer)
-    }
+        if (!board.hasWinner(currentPlayer)) {
+            changeTurn()
+        }
 
-    const getInput = () => {
-        const row = prompt("row")
-        const column = prompt("column")
-
-        return {row, column}
+        // return board.hasWinner(currentPlayer)
     }
 
     const playGame = () => {
-        printNewRound()
-        let hasWon = playRound()
+        //printNewRound()
+        //let hasWon = playRound()
+
+        let hasWon = false
 
         while (!hasWon) {
             changeTurn()
-            printNewRound()
+            //printNewRound()
 
             hasWon = playRound()   
         }
@@ -201,7 +262,7 @@ function GameController() {
     }
     
     return {
-        playGame,
+        playRound,
         getCurrentPlayer
     }
 }

@@ -16,7 +16,7 @@ body {
 button {
     font-size: 1.25em;
     color: var(--green-color);
-    width: 120px;
+    width: 150px;
     height: 2em;
     border: solid 2px var(--green-color);
     border-radius: 10px;
@@ -36,13 +36,18 @@ button {
     background-color: var(--gray-color);
     border: solid 5px var(--pink-color);
     border-radius: 10px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 3em;
+    color: var(--green-color);
 }
 
 .board-grid {
     display: grid;
     grid-template: repeat(3, 1fr) / repeat(3, 1fr);
-
-    gap: 10px;
 
     width: var(--board-size);
     height: var(--board-size);
@@ -59,11 +64,31 @@ button {
     padding: 16px;
 }
 
+/* GAP */
+.gap-16 {
+    gap: 16px;
+}
+
 /* FLEX */
 .flex {
     display: flex;
 }
 
+.flex-col {
+    flex-direction: column;
+}
+
+
 .justify-evenly {
     justify-content: space-evenly;
+}
+
+/* OTHER */
+
+.hidden {
+    display: none;
+}
+
+.not-interactable {
+    pointer-events: none;
 }
