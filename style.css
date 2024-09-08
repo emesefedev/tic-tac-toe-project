@@ -31,7 +31,6 @@ button {
 
 input {
     color: var(--green-color);
-    width: 150px;
     height: 2em;
     border: solid 2px var(--green-color);
     border-radius: 10px;
@@ -106,6 +105,10 @@ input {
 }
 
 /* GAP */
+.gap-8 {
+    gap: 8px;
+}
+
 .gap-16 {
     gap: 16px;
 }
@@ -119,9 +122,21 @@ input {
     flex-direction: column;
 }
 
+.flex-grow-3 {
+    flex-grow: 3;
+}
 
 .justify-evenly {
     justify-content: space-evenly;
+}
+
+/* WIDTH */
+.w-25 {
+    width: 25px;
+}
+
+.w-150 {
+    width: 150px;
 }
 
 /* OTHER */
