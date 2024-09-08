@@ -339,4 +339,3 @@ function GameController(playerOneName, playerTwoName, playerOneMark, playerTwoMa
         getCurrentPlayer
     }
 }
-  
