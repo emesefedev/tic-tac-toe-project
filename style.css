@@ -38,6 +38,10 @@ input {
     background-color: transparent;
 }
 
+#player-name {
+    color: var(--blue-color);
+}
+
 /* TEXT */
 .title {
     font-size: 3em;

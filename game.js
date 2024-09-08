@@ -46,6 +46,7 @@ const boardCells = () => document.querySelectorAll(".board-cell")
 
 const turnMessageText = () => document.getElementById("turn-message")
 const invalidPositionMessageText = () => document.getElementById("invalid-position-message")
+const winMessageText = () => document.getElementById("win-message")
 
 const playerOneNameInput = () => document.getElementById("player-one-name-input")
 const playerTwoNameInput = () => document.getElementById("player-two-name-input")
@@ -59,6 +60,7 @@ window.addEventListener("load", () => {
         event.target.classList.add("hidden")
         turnMessageText().classList.add("hidden")
         invalidPositionMessageText().classList.add("hidden")
+        winMessageText().classList.add("hidden")
 
         startButton().classList.remove("hidden")
         playerOneNameInput().classList.remove("hidden")
@@ -86,7 +88,7 @@ function newGame() {
     playerTwoNameInput().classList.add("hidden")
 
     restartButton().classList.remove("hidden")
-    turnMessageText().classList.remove("hidden", "win")
+    turnMessageText().classList.remove("hidden")
     
     game = GameController(playerOneName, playerTwoName)
     updateTurnMessage()
@@ -123,12 +125,21 @@ function cleanBoardCells() {
 }
 
 function updateTurnMessage() {
-    turnMessageText().textContent = `${game.getCurrentPlayer().name}'s turn. What will you do? `
+    turnMessageText().childNodes.forEach(node => {
+        if (node.nodeType === Node.TEXT_NODE) {
+            node.textContent = "'s turn. What will you do?"
+        }
+        else {
+            node.textContent = `${game.getCurrentPlayer().name}`
+        }
+    })
 }
 
 function showWinMessage() {
-    turnMessageText().classList.add("win")
-    turnMessageText().textContent = `${game.getCurrentPlayer().name} wins!!!`
+    turnMessageText().classList.add("hidden")
+
+    winMessageText().classList.remove("hidden")
+    winMessageText().textContent = `${game.getCurrentPlayer().name} wins!!!`
 }
 
 function showInvalidPositionMessage() {
