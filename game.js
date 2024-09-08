@@ -41,22 +41,31 @@ let game = null
 
 const startButton = () => document.getElementById("start-game-button")
 const restartButton = () => document.getElementById("restart-game-button")
+
 const boardCells = () => document.querySelectorAll(".board-cell")
+
 const turnMessageText = () => document.getElementById("turn-message")
 const invalidPositionMessageText = () => document.getElementById("invalid-position-message")
 
+const playerOneNameInput = () => document.getElementById("player-one-name-input")
+const playerTwoNameInput = () => document.getElementById("player-two-name-input")
+
 window.addEventListener("load", () => {
     startButton().addEventListener("click", () => {
-        startButton().classList.add("hidden")
-
-        restartButton().classList.remove("hidden")
-        turnMessageText().classList.remove("hidden")
-
         newGame()    
     })  
 
-    restartButton().addEventListener("click", () => {
-        newGame()
+    restartButton().addEventListener("click", (event) => {
+        event.target.classList.add("hidden")
+        turnMessageText().classList.add("hidden")
+        invalidPositionMessageText().classList.add("hidden")
+
+        startButton().classList.remove("hidden")
+        playerOneNameInput().classList.remove("hidden")
+        playerTwoNameInput().classList.remove("hidden")
+
+        cleanBoardCells()
+        makeBoardCellsNotInteractable()  
     })
     
     initializeBoardCells() 
@@ -64,11 +73,24 @@ window.addEventListener("load", () => {
 })
 
 function newGame() {
-    game = GameController()
-    updateTurnMessage()
-    turnMessageText().classList.remove("win")
+    startButton().classList.add("hidden")
+
+    const playerOneName = playerOneNameInput().value === "" 
+        ? playerOneNameInput().getAttribute("placeholder") 
+        : playerOneNameInput().value 
+    const playerTwoName = playerTwoNameInput().value === "" 
+        ? playerTwoNameInput().getAttribute("placeholder")
+        : playerTwoNameInput().value 
+
+    playerOneNameInput().classList.add("hidden")
+    playerTwoNameInput().classList.add("hidden")
+
+    restartButton().classList.remove("hidden")
+    turnMessageText().classList.remove("hidden", "win")
     
-    cleanBoardCells()
+    game = GameController(playerOneName, playerTwoName)
+    updateTurnMessage()
+    
     makeBoardCellsInteractable()    
 }
 
@@ -248,12 +270,12 @@ class Player {
     }
 }
 
-function GameController() {
+function GameController(playerOneName, playerTwoName) {
     const board = GameBoard(3, 3)
 
     const players = [
-        new Player("Player One", "X"),
-        new Player("Player Two", "O")
+        new Player(playerOneName, "X"),
+        new Player(playerTwoName, "O")
     ]
 
     let currentPlayer = players[0]

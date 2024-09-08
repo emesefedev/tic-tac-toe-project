@@ -29,6 +29,15 @@ button {
     background-color: transparent;
 }
 
+input {
+    color: var(--green-color);
+    width: 150px;
+    height: 2em;
+    border: solid 2px var(--green-color);
+    border-radius: 10px;
+    background-color: transparent;
+}
+
 /* TEXT */
 .title {
     font-size: 3em;
@@ -85,6 +94,11 @@ button {
 
 .p-16 {
     padding: 16px;
+}
+
+.px-8 {
+    padding-right: 8px;
+    padding-left: 8px;
 }
 
 /* GAP */

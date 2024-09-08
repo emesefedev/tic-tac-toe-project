@@ -24,10 +24,22 @@
             </div>
 
             <div class="flex flex-col gap-16">
-                <button id="start-game-button">Start Game</button>
-                <p id="turn-message" class="message hidden">Player Turn / Player has won / Draw</p>
-                <p id="invalid-position-message" class="message invalid hidden">Invalid</p>
-                <button id="restart-game-button" class="hidden">Restart Game</button>
+                <input 
+                    class="px-8" 
+                    id="player-one-name-input" 
+                    name="player-one-name-input" 
+                    type="text"
+                    placeholder="Player One">
+                <input 
+                    class="px-8" 
+                    id="player-two-name-input" 
+                    name="player-two-name-input" 
+                    type="text"
+                    placeholder="Player Two">
+                <button class="px-8" id="start-game-button">Start Game</button>
+                <p id="turn-message" class="message hidden"></p>
+                <p id="invalid-position-message" class="message invalid hidden"></p>
+                <button class="px-8 hidden" id="restart-game-button">Restart Game</button>
             </div>
         </div>
     </body>
