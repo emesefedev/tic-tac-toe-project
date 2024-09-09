@@ -39,6 +39,7 @@ const boardCellsPositions = {
 
 let game = null
 
+// HTML elements
 const startButton = () => document.getElementById("start-game-button")
 const restartButton = () => document.getElementById("restart-game-button")
 
@@ -62,18 +63,8 @@ window.addEventListener("load", () => {
         newGame()    
     })  
 
-    restartButton().addEventListener("click", (event) => {
-        event.target.classList.add("hidden")
-        turnMessageText().classList.add("hidden")
-        invalidPositionMessageText().classList.add("hidden")
-        winMessageText().classList.add("hidden")
-
-        startButton().classList.remove("hidden")
-        playerOneInfo().classList.remove("hidden")
-        playerTwoInfo().classList.remove("hidden")
-
-        cleanBoardCells()
-        makeBoardCellsNotInteractable()  
+    restartButton().addEventListener("click", () => {
+        restartGame()
     })
     
     initializeBoardCells() 
@@ -107,6 +98,20 @@ function newGame() {
     updateTurnMessage()
     
     makeBoardCellsInteractable()    
+}
+
+function restartGame() {
+    restartButton().classList.add("hidden")
+    turnMessageText().classList.add("hidden")
+    invalidPositionMessageText().classList.add("hidden")
+    winMessageText().classList.add("hidden")
+
+    startButton().classList.remove("hidden")
+    playerOneInfo().classList.remove("hidden")
+    playerTwoInfo().classList.remove("hidden")
+
+    cleanBoardCells()
+    makeBoardCellsNotInteractable() 
 }
 
 function initializeBoardCells() {
