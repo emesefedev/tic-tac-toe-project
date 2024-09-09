@@ -1,4 +1,150 @@
+:root {
+    --board-size: 30vw;
+
+    --gray-color: rgb(136, 149, 179);
+    --white-color: rgb(255, 255, 255);
+    --pink-color: rgb(218, 182, 252);
+    --tangerine-color: rgb(250, 162, 117);
+    --blue-color: rgb(110, 250, 251);
+    --green-color: rgb(229, 244, 227);
+    --black-color: rgb(35, 31, 32);
+}
+
+* {
+    margin: 0;
+}
+
 body {
     font-family: "Roboto", sans-serif;
-    background-color: gainsboro;
+    background-color: var(--gray-color);
+}
+
+button {
+    font-size: 1.25em;
+    color: var(--green-color);
+    width: 150px;
+    height: 2em;
+    border: solid 2px var(--green-color);
+    border-radius: 10px;
+    background-color: transparent;
+}
+
+input {
+    color: var(--green-color);
+    height: 2em;
+    border: solid 2px var(--green-color);
+    border-radius: 10px;
+    background-color: transparent;
+}
+
+#player-name {
+    color: var(--blue-color);
+}
+
+/* TEXT */
+.title {
+    font-size: 3em;
+    color: var(--pink-color);
+    text-align: center;
+
+    margin-bottom: 32px;
+}
+
+.message {
+    font-size: 1em;
+    color: var(--white-color)
+}
+
+.invalid {
+    font-size: 1.25em;
+    color: var(--tangerine-color);
+}
+
+.win {
+    font-size: 1.5em;
+    color: var(--blue-color);
+}
+
+/* BOARD */
+
+.board-cell {
+    background-color: var(--gray-color);
+    border: solid 5px var(--pink-color);
+    border-radius: 10px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 3em;
+    color: var(--green-color);
+}
+
+.board-grid {
+    display: grid;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+
+    width: var(--board-size);
+    height: var(--board-size);
+}
+
+/* WIDTH */
+.full-width {
+    width: 100vw;
+}
+
+/* PADDING */
+
+.p-16 {
+    padding: 16px;
+}
+
+.px-8 {
+    padding-right: 8px;
+    padding-left: 8px;
+}
+
+/* GAP */
+.gap-8 {
+    gap: 8px;
+}
+
+.gap-16 {
+    gap: 16px;
+}
+
+/* FLEX */
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.flex-grow-3 {
+    flex-grow: 3;
+}
+
+.justify-evenly {
+    justify-content: space-evenly;
+}
+
+/* WIDTH */
+.w-25 {
+    width: 25px;
+}
+
+.w-150 {
+    width: 150px;
+}
+
+/* OTHER */
+
+.hidden {
+    display: none;
+}
+
+.not-interactable {
+    pointer-events: none;
 }

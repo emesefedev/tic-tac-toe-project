@@ -7,7 +7,60 @@
         <script src="game.js"></script>
     </head>
 
-    <body>
-        <h1>Tic Tac Toe</h1>
+    <body class="p-16">
+        <h1 class="title">Tic Tac Toe</h1>
+
+        <div class="full-width flex justify-evenly">
+            <div class="board-grid gap-16">
+                <div class="board-cell"></div>
+                <div class="board-cell"></div>
+                <div class="board-cell"></div>
+                <div class="board-cell"></div>
+                <div class="board-cell"></div>
+                <div class="board-cell"></div>
+                <div class="board-cell"></div>
+                <div class="board-cell"></div>
+                <div class="board-cell"></div>
+            </div>
+
+            <div class="flex flex-col gap-16">
+                <div id="player-one-info" class="flex gap-8">
+                    <input 
+                        class="px-8 w-150" 
+                        id="player-one-name-input" 
+                        name="player-one-name-input" 
+                        type="text"
+                        placeholder="Player One">
+                    <input 
+                        class="px-8 w-25" 
+                        id="player-one-mark-input" 
+                        name="player-one-mark-input" 
+                        type="text"
+                        placeholder="X">
+                </div>
+                
+                <div id="player-two-info" class="flex gap-8">
+                    <input 
+                        class="px-8 w-150" 
+                        id="player-two-name-input" 
+                        name="player-two-name-input" 
+                        type="text"
+                        placeholder="Player Two">
+
+                    <input 
+                        class="px-8 w-25" 
+                        id="player-two-mark-input" 
+                        name="player-two-mark-input" 
+                        type="text" 
+                        placeholder="O">
+                </div>
+                
+                <button class="px-8" id="start-game-button">Start Game</button>
+                <p id="turn-message" class="message hidden"><span id="player-name"></span>turn</p>
+                <p id="invalid-position-message" class="message invalid hidden"></p>
+                <p id="win-message" class="win hidden"></p>
+                <button class="px-8 hidden" id="restart-game-button">Restart Game</button>
+            </div>
+        </div>
     </body>
 </html>

@@ -1,3 +1,174 @@
+const boardCellsPositions = {
+    0: {
+        row: 0,
+        column:0
+    },
+    1: {
+        row: 0,
+        column:1
+    },
+    2: {
+        row: 0,
+        column:2
+    },
+    3: {
+        row: 1,
+        column:0
+    },
+    4: {
+        row: 1,
+        column:1
+    },
+    5: {
+        row: 1,
+        column:2
+    },
+    6: {
+        row: 2,
+        column:0
+    },
+    7: {
+        row: 2,
+        column:1
+    },
+    8: {
+        row: 2,
+        column:2
+    }
+}
+
+let game = null
+
+// HTML elements
+const startButton = () => document.getElementById("start-game-button")
+const restartButton = () => document.getElementById("restart-game-button")
+
+const boardCells = () => document.querySelectorAll(".board-cell")
+
+const turnMessageText = () => document.getElementById("turn-message")
+const invalidPositionMessageText = () => document.getElementById("invalid-position-message")
+const winMessageText = () => document.getElementById("win-message")
+
+const playerOneInfo = () => document.getElementById("player-one-info")
+const playerTwoInfo = () => document.getElementById("player-two-info")
+
+const playerOneNameInput = () => document.getElementById("player-one-name-input")
+const playerTwoNameInput = () => document.getElementById("player-two-name-input")
+
+const playerOneMarkInput = () => document.getElementById("player-one-mark-input")
+const playerTwoMarkInput = () => document.getElementById("player-two-mark-input")
+
+window.addEventListener("load", () => {
+    startButton().addEventListener("click", () => {
+        newGame()    
+    })  
+
+    restartButton().addEventListener("click", () => {
+        restartGame()
+    })
+    
+    initializeBoardCells() 
+    makeBoardCellsNotInteractable()  
+})
+
+function newGame() {
+    startButton().classList.add("hidden")
+
+    const playerOneName = playerOneNameInput().value === "" 
+        ? playerOneNameInput().getAttribute("placeholder") 
+        : playerOneNameInput().value 
+    const playerTwoName = playerTwoNameInput().value === "" 
+        ? playerTwoNameInput().getAttribute("placeholder")
+        : playerTwoNameInput().value 
+
+    const playerOneMark = playerOneMarkInput().value === "" 
+        ? playerOneMarkInput().getAttribute("placeholder") 
+        : playerOneMarkInput().value 
+    const playerTwoMark = playerTwoMarkInput().value === "" 
+        ? playerTwoMarkInput().getAttribute("placeholder")
+        : playerTwoMarkInput().value 
+
+    playerOneInfo().classList.add("hidden")
+    playerTwoInfo().classList.add("hidden")
+
+    restartButton().classList.remove("hidden")
+    turnMessageText().classList.remove("hidden")
+    
+    game = GameController(playerOneName, playerTwoName, playerOneMark, playerTwoMark)
+    updateTurnMessage()
+    
+    makeBoardCellsInteractable()    
+}
+
+function restartGame() {
+    restartButton().classList.add("hidden")
+    turnMessageText().classList.add("hidden")
+    invalidPositionMessageText().classList.add("hidden")
+    winMessageText().classList.add("hidden")
+
+    startButton().classList.remove("hidden")
+    playerOneInfo().classList.remove("hidden")
+    playerTwoInfo().classList.remove("hidden")
+
+    cleanBoardCells()
+    makeBoardCellsNotInteractable() 
+}
+
+function initializeBoardCells() {
+    boardCells().forEach((boardCell, i) => {
+        boardCell.id = i
+        boardCell.addEventListener("click", () => {
+            const {row, column} = boardCellsPositions[boardCell.id]
+            game.playRound(row, column)
+        })
+    })
+}
+
+function makeBoardCellsInteractable() {
+    boardCells().forEach((boardCell) => {
+        boardCell.classList.remove("not-interactable")
+    })
+}
+
+function makeBoardCellsNotInteractable() {
+    boardCells().forEach((boardCell) => {
+        boardCell.classList.add("not-interactable")
+    })
+}
+
+function cleanBoardCells() {
+    boardCells().forEach((boardCell) => {
+        boardCell.textContent = ""
+    })
+}
+
+function updateTurnMessage() {
+    turnMessageText().childNodes.forEach(node => {
+        if (node.nodeType === Node.TEXT_NODE) {
+            node.textContent = "'s turn. What will you do?"
+        }
+        else {
+            node.textContent = `${game.getCurrentPlayer().name}`
+        }
+    })
+}
+
+function showWinMessage() {
+    turnMessageText().classList.add("hidden")
+
+    winMessageText().classList.remove("hidden")
+    winMessageText().textContent = `${game.getCurrentPlayer().name} wins!!!`
+}
+
+function showInvalidPositionMessage() {
+    invalidPositionMessageText().classList.remove("hidden")
+    invalidPositionMessageText().textContent = `Invalid position... Try again`
+}
+
+function hideInvalidPositionMessage() {
+    invalidPositionMessageText().classList.add("hidden")
+}
+
 function GameBoard(totalRows, totalColumns) {
     const rows = totalRows
     const columns = totalColumns
@@ -83,7 +254,10 @@ function GameBoard(totalRows, totalColumns) {
     }
   
     const addMarkToBoard = (row, column, player) => {
-      board[row][column].addMark(player);
+        const cell = board[row][column]
+        cell.addMark(player)
+        
+        boardCells()[rows * row + column].textContent = cell.getValue()
     }
   
     const printBoard = () => {
@@ -125,77 +299,48 @@ class Player {
     }
 }
 
-function GameController() {
+function GameController(playerOneName, playerTwoName, playerOneMark, playerTwoMark) {
     const board = GameBoard(3, 3)
 
     const players = [
-        new Player("Player One", "X"),
-        new Player("Player Two", "O")
+        new Player(playerOneName, playerOneMark),
+        new Player(playerTwoName, playerTwoMark)
     ]
 
     let currentPlayer = players[0]
 
     const changeTurn = () => {
         currentPlayer = currentPlayer === players[0] ? players[1] : players[0];
+        updateTurnMessage()
     }
 
     const getCurrentPlayer = () => {
         return currentPlayer
     }
 
-    const printNewRound = () => {
-        console.log(`${currentPlayer.name}'s turn. What will you do?`)
-        board.printBoard()
-    }
+    const playRound = (row, column) => {        
+        console.log(`${board.isValidMarkPosition(row, column, currentPlayer)}`)
 
-    const playRound = () => {
-
-        let {row, column} = getInput()
-        
-        console.log(`Adding ${currentPlayer.name}'s mark into (${row}, ${column})...`)
-
-        while (!board.isValidMarkPosition(row, column, currentPlayer)) {
-            console.log(`Invalid position (${row}, ${column})... Try again`)
-            
-            // TODO: Can this be done differently?
-            const newInput = getInput()
-            row = newInput.row
-            column = newInput.column
-
-            console.log(`Adding ${currentPlayer.name}'s mark into (${row}, ${column})...`)
+        if (!board.isValidMarkPosition(row, column, currentPlayer)) {
+            console.log("Estoy entrando")
+            showInvalidPositionMessage()
+            return
         }
         
         board.addMarkToBoard(row, column, currentPlayer)
+        hideInvalidPositionMessage()
 
-        return board.hasWinner(currentPlayer)
-    }
-
-    const getInput = () => {
-        const row = prompt("row")
-        const column = prompt("column")
-
-        return {row, column}
-    }
-
-    const playGame = () => {
-        printNewRound()
-        let hasWon = playRound()
-
-        while (!hasWon) {
+        if (!board.hasWinner(currentPlayer)) {
             changeTurn()
-            printNewRound()
-
-            hasWon = playRound()   
         }
-
-        console.log(`${currentPlayer.name} WINS!`)
+        else {
+            showWinMessage()
+            makeBoardCellsNotInteractable()
+        }
     }
     
     return {
-        playGame,
+        playRound,
         getCurrentPlayer
     }
 }
-  
-const game = GameController()
-game.playGame()
