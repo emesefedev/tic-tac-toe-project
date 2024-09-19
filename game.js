@@ -74,7 +74,7 @@ window.addEventListener("load", () => {
 function newGame() {
     startButton().classList.add("hidden")
 
-    const playerOneName = playerOneNameInput().value === "" 
+    const playerOneName = playerOneNameInput().value === ""
         ? playerOneNameInput().getAttribute("placeholder") 
         : playerOneNameInput().value 
     const playerTwoName = playerTwoNameInput().value === "" 
@@ -118,7 +118,7 @@ function initializeBoardCells() {
     boardCells().forEach((boardCell, i) => {
         boardCell.id = i
         boardCell.addEventListener("click", () => {
-            const {row, column} = boardCellsPositions[boardCell.id]
+            const {row, column} = boardCellsPositions[boardCell.id] // idx / i, idx % j
             game.playRound(row, column)
         })
     })
@@ -259,19 +259,11 @@ function GameBoard(totalRows, totalColumns) {
         
         boardCells()[rows * row + column].textContent = cell.getValue()
     }
-  
-    const printBoard = () => {
-        const boardWithCellValues = board.map((row) => {
-            return row.map((cell) => cell.getValue())
-        })
-
-        console.log(boardWithCellValues)
-    }
 
     // Once we create the object, we create the board
     createBoard()
   
-    return { getBoard, addMarkToBoard, printBoard, isValidMarkPosition, hasWinner, isFull }
+    return { getBoard, addMarkToBoard, isValidMarkPosition, hasWinner, isFull }
 }
 
 function Cell() {
